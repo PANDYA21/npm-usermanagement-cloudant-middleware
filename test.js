@@ -4,7 +4,7 @@ process.env.VCAP_SERVICES = JSON.stringify({
 	}]
 });
 
-const UsermanagementRouter = require('.');
+const UsermanagementRouter = require('usermanagement-cloudant-middleware');
 const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
