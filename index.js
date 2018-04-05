@@ -35,6 +35,9 @@ class UsermanagementRouter {
 
 	loginRouter() {
 		this.router.get('/login', (req, res, next) => {
+			if (typeof this.parentRouter === 'undefined') {
+				return res.status(200).sendFile('login.html', { root: __dirname });
+			}
 			let parent_paths = _.map(this.parentRouter._router.stack, 'route.path');
 			let user_provided_login_route = this.parentRouter._router.stack[_.findIndex(parent_paths, x => x === '/login')];
 			if (typeof user_provided_login_route === 'undefined') {
