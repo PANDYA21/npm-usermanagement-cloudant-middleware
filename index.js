@@ -8,6 +8,7 @@ class UsermanagementRouter {
 	constructor() {
 		this.cookieMaxAge = arguments[0].cookieMaxAge || 1000 * 36000; //1 hour
 		this.parentRouter = arguments[0].parentRouter;
+		this.index = arguments[0].index || '/';
 		this.router = express.Router();
 		this.cookieParser();
 		this.loginRouter();
@@ -66,7 +67,7 @@ class UsermanagementRouter {
 					maxAge: cookieMaxAge,
 					path: '/'
 				});
-				res.status(200).json({ success: true, result });
+				res.status(200).redirect(this.index);
 			});
 		});
 	}

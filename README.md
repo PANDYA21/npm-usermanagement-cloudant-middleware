@@ -22,7 +22,8 @@ const express = require('express');
 // create instance
 let usermanagementRouter = new UsermanagementRouter({
   parentRouter: app, // provide parent custom routes through root router app if any.
-  cookieMaxAge: 1 * 1000 * 3600 // authorization cookie expiration age in ms, default 1 hour.
+  cookieMaxAge: 1 * 1000 * 3600, // authorization cookie expiration age in ms, default 1 hour.
+  index: '/' // path to index.html or root page after successful auth
 });
 app.use(usermanagementRouter.router);
 
