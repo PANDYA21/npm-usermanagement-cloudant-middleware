@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Miyu</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+		<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+	</head>
+
+	<body style="font-family: calibri!important; background-color: lightgrey!important;">
+		<header align="right">
+			<form method="GET" action="/logout">
+				<button type="submit" class="btn btn-outline-danger fa fa-power-off" value="Logout" style="height: 50px; width: 50px;"></button>
+			</form>
+		</header>
+		<div class="container">
+			<div class="well" style="margin: auto; width: 80%; padding: 5%;">
+				<!-- new form -->
+				<div class="card">
+					<div class="card-header">Create User</div>
+					<div class="card-body">
+						<form id="create_user" method="POST" action="/users/">
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">@</span>
+								</div>
+								<input name="username" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+							</div>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">
+								<i class="fas fa-key"></i>
+							</span>
+								</div>
+								<input name="password" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+							</div>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<label class="input-group-text" for="inputGroupSelect01">Role</label>
+								</div>
+								<select class="custom-select" id="inputGroupSelect01">
+									<option value="user" selected>user</option>
+									<option value="root">root</option>
+								</select>
+							</div>
+							<div align="center">
+								<input class="btn btn-outline-primary" type="submit" name="submit" value="Create User">
+							</div>
+						</form>
+					</div>
+				</div>
+				<!--  -->
+			</div>
+		</div>
+	</body>
+
+</html>

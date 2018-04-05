@@ -1,0 +1,32 @@
+{
+	"name": "usermanagement-cloudant-middleware",
+	"description": "",
+	"keywords": [
+		"usermanagement",
+		"cloudant",
+		"jsonwebtoken",
+		"middleware"
+	],
+	"version": "0.0.1",
+	"private": true,
+	"dependencies": {
+		"bluebird": "^3.5.1",
+		"cookie-parser": "^1.4.3",
+		"express": "^4.16.3",
+		"usermanagement-cloudant": "git+https://git.timetoact-group.com/BPA/npm-usermanagement-cloudant.git"
+	},
+	"scripts": {
+		"start": "npm run production",
+		"production": "node index.js",
+		"develop": "SET is_dev=TRUE &&nodemon index.js",
+		"test": "nodemon test.js"
+	},
+	"devDependencies": {
+		"nodemon": "^1.17.3"
+	},
+	"author": "bhaumik.pandya@bluetrade.de",
+	"license": "UNLICENSED",
+	"engines": {
+		"node": "9.9.0"
+	}
+}

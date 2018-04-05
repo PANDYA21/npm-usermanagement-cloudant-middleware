@@ -1,0 +1,8 @@
+*_creds.json
+*_log.json
+*.log
+node_modules
+*.sublime-workspace
+nodemon.json
+package-lock.json
+routes/train_nlc/bewertungen/*
