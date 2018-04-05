@@ -28,9 +28,17 @@
 						<form id="create_user" method="POST" action="/users/">
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
+									<span class="input-group-text" id="basic-addon1">
+										<i class="fas fa-user-secret"></i>
+									</span>
+								</div>
+								<input required name="sharedSecret" type="text" class="form-control" placeholder="sharedSecret" aria-label="sharedSecret" aria-describedby="basic-addon1">
+							</div>
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
 									<span class="input-group-text" id="basic-addon1">@</span>
 								</div>
-								<input name="username" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+								<input required name="username" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
 							</div>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">
@@ -38,7 +46,7 @@
 								<i class="fas fa-key"></i>
 							</span>
 								</div>
-								<input name="password" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+								<input required name="password" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
 							</div>
 							<div class="input-group mb-3">
 								<div class="input-group-prepend">

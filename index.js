@@ -9,10 +9,12 @@ class UsermanagementRouter {
 		this.cookieMaxAge = arguments[0].cookieMaxAge || 1000 * 36000; //1 hour
 		this.parentRouter = arguments[0].parentRouter;
 		this.index = arguments[0].index || '/';
+		this.sharedSecret = arguments[0].sharedSecret || 'koelnerDom';
 		this.router = express.Router();
 		this.cookieParser();
 		this.loginRouter();
 		this.logoutRouter();
+		this.userCreationRouter();
 		this.authenticationRouter();
 		this.authorizationRouter();
 		this.usermanagementRouter();
@@ -54,6 +56,21 @@ class UsermanagementRouter {
 		});
 	}
 
+	userCreationRouter() {
+		this.router.get('/users/createuser', (req, res, next) => {
+			return res.status(200).sendFile('createuser.html', { root: __dirname });
+		});
+
+		this.router.post('/users/', (req, res, next) => {
+			if(req.body.sharedSecret !== this.sharedSecret) {
+				return next(new Error('Incorrect secret.'));
+			}
+			usermanagement.createUserCb(req.body, (err, result) => {
+				err ? next(err) : res.status(200).json({ success: true, result });
+			});
+		});
+	}
+
 	authenticationRouter() {
 		this.router.post('/authenticate', (req, res, next) => {
 			usermanagement.authenticateUserCb(req.body.username, Buffer.from(req.body.password, 'base64').toString(), (err, result) => {
@@ -88,10 +105,6 @@ class UsermanagementRouter {
 	}
 
 	usermanagementRouter() {
-		this.router.get('/users/createuser', (req, res, next) => {
-			return res.status(200).sendFile('createuser.html', { root: __dirname });
-		});
-
 		this.router.get('/users/active', (req, res, next) => {
 			usermanagement.getActiveUsersCb((err, result) => {
 				err ? next(err) : res.status(200).json({ success: true, result });
@@ -100,12 +113,6 @@ class UsermanagementRouter {
 
 		this.router.get('/users/user/:username', (req, res, next) => {
 			usermanagement.getUserCb(req.params.username, (err, result) => {
-				err ? next(err) : res.status(200).json({ success: true, result });
-			});
-		});
-
-		this.router.post('/users/', (req, res, next) => {
-			usermanagement.createUserCb(req.body, (err, result) => {
 				err ? next(err) : res.status(200).json({ success: true, result });
 			});
 		});
