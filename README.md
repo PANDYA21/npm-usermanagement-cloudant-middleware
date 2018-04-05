@@ -16,7 +16,7 @@ npm install git+https://git.timetoact-group.com/BPA/npm-usermanagement-cloudant-
 
 Require in your code:
 ```javascript
-const UsermanagementRouter = require('.');
+const UsermanagementRouter = require('usermanagement-cloudant-middleware');
 const express = require('express');
 
 // create instance
