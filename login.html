@@ -154,11 +154,15 @@
 
 			function checkAuthMsg() {
 				let parsed_query = parseQuery(window.location.search);
-				if (typeof parsed_query.authsuccess == 'undefined') {
+				console.log(parsed_query);
+				if (typeof parsed_query.authsuccess == 'undefined' && typeof parsed_query.registrationSuccessful == 'undefined') {
 					return;
 				}
 				if (parsed_query.authsuccess == 'false') {
-					alert('Authentication failed');
+					this.alert('Authentication failed');
+				}
+				if (parsed_query.registrationSuccessful == 'true') {
+					this.alert('Registration was successful! use your login details now.');
 				}
 			}
 

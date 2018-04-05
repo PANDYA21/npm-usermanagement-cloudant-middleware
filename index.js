@@ -66,7 +66,10 @@ class UsermanagementRouter {
 				return next(new Error('Incorrect secret.'));
 			}
 			usermanagement.createUserCb(req.body, (err, result) => {
-				err ? next(err) : res.status(200).json({ success: true, result });
+				if (err) {
+					return next(err);
+				}
+				res.status(200).redirect('/login?registrationSuccessful=true');
 			});
 		});
 	}
