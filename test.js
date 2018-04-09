@@ -25,7 +25,7 @@ app.get('/withoutauth', (req, res, next) => {
 	res.status(200).json({ success: true, message: 'Should get it before login!' });
 });
 
-// auth
+// auth and usermgmt
 let usermanagementRouter = new UsermanagementRouter({
 	parentRouter: app,
 	cookieMaxAge: 2 * 1000 * 3600

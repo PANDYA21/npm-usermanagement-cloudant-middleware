@@ -14,7 +14,7 @@
 		"cookie-parser": "^1.4.3",
 		"express": "^4.16.3",
 		"lodash": "^4.17.5",
-		"usermanagement-cloudant": "git+https://git.timetoact-group.com/BPA/npm-usermanagement-cloudant.git"
+		"usermanagement-cloudant": "git+https://github.com/RAW21/npm-usermanagement-cloudant.git"
 	},
 	"scripts": {
 		"start": "npm run production",
