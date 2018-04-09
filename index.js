@@ -10,11 +10,13 @@ class UsermanagementRouter {
 		this.parentRouter = arguments[0].parentRouter;
 		this.index = arguments[0].index || '/';
 		this.sharedSecret = arguments[0].sharedSecret || 'koelnerDom';
+		this.pathsWithoutAuth = arguments[0].pathsWithoutAuth; // should be an array of strings, requires parentRouter.
 		this.router = express.Router();
 		this.cookieParser();
 		this.loginRouter();
 		this.logoutRouter();
 		this.userCreationRouter();
+		this.routesWithoutAuth();
 		this.authenticationRouter();
 		this.authorizationRouter();
 		this.usermanagementRouter();
@@ -62,7 +64,7 @@ class UsermanagementRouter {
 		});
 
 		this.router.post('/users/', (req, res, next) => {
-			if(req.body.sharedSecret !== this.sharedSecret) {
+			if (req.body.sharedSecret !== this.sharedSecret) {
 				return next(new Error('Incorrect secret.'));
 			}
 			usermanagement.createUserCb(req.body, (err, result) => {
@@ -72,6 +74,24 @@ class UsermanagementRouter {
 				res.status(200).redirect('/login?registrationSuccessful=true');
 			});
 		});
+	}
+
+	routesWithoutAuth() {
+		if (typeof this.pathsWithoutAuth === 'undefined' || this.parentRouter === 'undefined') {
+			return;
+		}
+		let parent_paths = _.map(this.parentRouter._router.stack, 'route.path');
+		console.log(JSON.stringify(parent_paths, null, 2));
+		for (let path of this.pathsWithoutAuth) {
+			this.router.use(path, (req, res, next) => {
+				let this_path = this.parentRouter._router.stack[_.findIndex(parent_paths, x => x === path)];
+				if (typeof this_path !== 'undefined') {
+					return this_path.handle(req, res, next);
+				} else {
+					next();
+				}
+			});
+		}
 	}
 
 	authenticationRouter() {

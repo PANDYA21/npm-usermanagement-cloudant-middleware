@@ -18,14 +18,23 @@ app.use(bodyParser.urlencoded({
 	extended: true,
 	limit: '1Gb'
 }));
+
+
+// routes with auth
+app.get('/withoutauth', (req, res, next) => {
+	res.status(200).json({ success: true, message: 'Should get it before login!' });
+});
+
+// auth
 let usermanagementRouter = new UsermanagementRouter({
 	parentRouter: app,
 	cookieMaxAge: 2 * 1000 * 3600
 });
 app.use(usermanagementRouter.router);
-// append application rutes herebelow.
-app.get('/getit', (req, res, next) => {
-	res.status(200).json({ success: true, message: 'Got it!' });
+
+// normal routes, with auth
+app.get('/withauth', (req, res, next) => {
+	res.status(200).json({ success: true, message: 'Should get it after login!' });
 });
 
 app.listen(8081);
