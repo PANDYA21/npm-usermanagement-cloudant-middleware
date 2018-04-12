@@ -7,17 +7,17 @@ const cookieMaxAge = 1000 * 36000; //1 hour
 class UsermanagementRouter {
 	constructor() {
 		this.routes = {
-			login_path: '/login',
-			login_page: 'login.html',
-			logout_path: '/logout',
-			createuser_path: '/users/createuser',
-			createuser_page: 'createuser.html',
-			users_path: '/users/',
-			authenticate_path: '/authenticate',
 			base_path: arguments[0].base_path || '/',
-			users_active_path: '/users/active',
-			users_username_path: '/users/user/:username',
+			authenticate_path: arguments[0].authenticate_path || '/authenticate',
+			login_path: arguments[0].login_path || '/login',
+			login_page: arguments[0].login_page || 'login.html',
+			logout_path: arguments[0].logout_path || '/logout',
+			users_path: arguments[0].users_path || '/users',
+			createuser_page: arguments[0].createuser_page || 'createuser.html' 
 		};
+		this.routes.createuser_path = arguments[0].createuser_path || this.routes.users_path + '/createuser',
+		this.routes.users_active_path = arguments[0].users_active_path || this.routes.users_path + '/active',
+		this.routes.users_username_path = arguments[0].users_username_path || this.routes.users_path + '/user/:username',
 		this.cookieMaxAge = arguments[0].cookieMaxAge || 1000 * 36000; //1 hour
 		this.parentRouter = arguments[0].parentRouter;
 		this.index = arguments[0].index || this.routes.base_path;
