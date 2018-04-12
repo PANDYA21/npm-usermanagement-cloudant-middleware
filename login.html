@@ -171,8 +171,8 @@
 			</script>
 			<div class="form">
 				<form class="login-form" method="post" action="/authenticate" onsubmit="b4Submit();">
-					<input type="text" placeholder="username" name="username" required />
-					<input type="password" placeholder="password" name="password" id="password" required />
+					<input type="text" placeholder="username" name="username" spellcheck="false" autocomplete="on" required />
+					<input type="password" placeholder="password" name="password" id="password" spellcheck="false" autocomplete="on" required />
 					<input type="submit" value="Submit" class="button">
 					<button class="button" style="background-color: black;" onclick="window.location.href = '/users/createuser'; return false;">Register</button>
 					<p class="message">Contact <a href="mailto::info@bluetrade.de">Support</a></p>

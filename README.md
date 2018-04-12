@@ -14,7 +14,13 @@ Install module:
 npm install git+https://git.timetoact-group.com/BPA/npm-usermanagement-cloudant-middleware.git --save
 ```
 
-Require in your code:
+Require and use in your code:
+
+Note:
+- Order is important
+  * Write all routes before using usermanagementRouter.router that are to be used without auth (e.g. public)
+  * All the other routes should be written after using usermanagementRouter.router.
+
 ```javascript
 const UsermanagementRouter = require('usermanagement-cloudant-middleware');
 const express = require('express');
@@ -25,12 +31,22 @@ let usermanagementRouter = new UsermanagementRouter({
   cookieMaxAge: 1 * 1000 * 3600, // authorization cookie expiration age in ms, default 1 hour.
   index: '/' // path to index.html or root page after successful auth
 });
-app.use(usermanagementRouter.router);
 
-// append application rutes herebelow.
-app.get('/getit', (req, res, next) => {
-  res.status(200).json({ success: true, message: 'Got it!' });
+/* Order is important! */
+
+// routes without auth (before using usermanagementRouter.router)
+app.get('/withoutauth', (req, res, next) => {
+  res.status(200).json({ success: true, message: 'Should get it before login!' });
 });
 
-app.listen(8080);
+// auth and user-mgmt
+app.use(usermanagementRouter.router);
+
+// normal routes, with auth
+app.get('/withauth', (req, res, next) => {
+  res.status(200).json({ success: true, message: 'Should get it after login!' });
+});
+
+// start the REST API
+app.listen(8081);
 ```
