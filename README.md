@@ -1,5 +1,5 @@
 # NPM middleware for use with express - wrapper of [npm-usermanagement-cloudant](https://github.com/RAW21/npm-usermanagement-cloudant.git)
-This repository serves as a middleware for basic usermanagement routing and authneitcation with nodejs-express apps.
+This repository serves as a middleware for basic usermanagement routing and authneitcation with nodejs-express apps. The authentication part is done with JWT.
 
 ## Features and Description
 - Express based routing

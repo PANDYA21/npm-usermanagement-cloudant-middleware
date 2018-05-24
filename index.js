@@ -70,7 +70,7 @@ class UsermanagementRouter {
 	}
 
 	userCreationRouter() {
-		this.router.get(this.routes.createuser_page, (req, res, next) => {
+		this.router.get(this.routes.createuser_path, (req, res, next) => {
 			return res.status(200).sendFile(this.routes.createuser_page, { root: __dirname });
 		});
 
