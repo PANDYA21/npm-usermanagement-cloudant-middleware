@@ -1,7 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser')
 const _ = require('lodash');
-const usermanagement = require('./callbackify');
+const Usermanagement = require('./callbackify');
 const cookieMaxAge = 1000 * 36000; //1 hour
 
 class UsermanagementRouter {
@@ -13,11 +13,13 @@ class UsermanagementRouter {
 			login_page: arguments[0].login_page || 'login.html',
 			logout_path: arguments[0].logout_path || '/logout',
 			users_path: arguments[0].users_path || '/users',
-			createuser_page: arguments[0].createuser_page || 'createuser.html' 
+			createuser_page: arguments[0].createuser_page || 'createuser.html'
 		};
-		this.routes.createuser_path = arguments[0].createuser_path || this.routes.users_path + '/createuser',
-		this.routes.users_active_path = arguments[0].users_active_path || this.routes.users_path + '/active',
-		this.routes.users_username_path = arguments[0].users_username_path || this.routes.users_path + '/user/:username',
+		this.vcap_name = arguments[0].vcap_name || 'cloudant';
+		this.usermanagement = new Usermanagement(this.vcap_name);
+		this.routes.createuser_path = arguments[0].createuser_path || this.routes.users_path + '/createuser';
+		this.routes.users_active_path = arguments[0].users_active_path || this.routes.users_path + '/active';
+		this.routes.users_username_path = arguments[0].users_username_path || this.routes.users_path + '/user/:username';
 		this.cookieMaxAge = arguments[0].cookieMaxAge || 1000 * 36000; //1 hour
 		this.parentRouter = arguments[0].parentRouter;
 		this.index = arguments[0].index || this.routes.base_path;
@@ -32,6 +34,14 @@ class UsermanagementRouter {
 		this.authorizationRouter();
 		this.usermanagementRouter();
 		this.errHandler();
+		this.syncRootUser();
+	}
+
+	// sync root user at start up
+	syncRootUser() {
+		this.usermanagement.syncRootUserCb((err, result) => {
+			err ? console.error('root user could not be synced to the service: ', this.vcap_name, 'errorMsg: ', err.message) : console.info('Root user synced to service: ', this.vcap_name);
+		});
 	}
 
 	parseCreds(req) {
@@ -78,7 +88,7 @@ class UsermanagementRouter {
 			if (req.body.sharedSecret !== this.sharedSecret) {
 				return next(new Error('Incorrect secret.'));
 			}
-			usermanagement.createUserCb(req.body, (err, result) => {
+			this.usermanagement.createUserCb(req.body, (err, result) => {
 				if (err) {
 					return next(err);
 				}
@@ -89,7 +99,7 @@ class UsermanagementRouter {
 
 	authenticationRouter() {
 		this.router.post(this.routes.authenticate_path, (req, res, next) => {
-			usermanagement.authenticateUserCb(req.body.username, Buffer.from(req.body.password, 'base64').toString(), (err, result) => {
+			this.usermanagement.authenticateUserCb(req.body.username, Buffer.from(req.body.password, 'base64').toString(), (err, result) => {
 				if (err) {
 					return res.status(401).redirect(this.routes.login_path + '?authsuccess=false');
 				}
@@ -111,7 +121,7 @@ class UsermanagementRouter {
 			if (typeof parsed_creds === 'undefined') {
 				return res.status(401).redirect(this.routes.login_path + '?authsuccess=false');
 			}
-			usermanagement.authenticateUserCb(parsed_creds.username, parsed_creds.password, (err, result) => {
+			this.usermanagement.authenticateUserCb(parsed_creds.username, parsed_creds.password, (err, result) => {
 				if (err) {
 					return res.status(401).redirect(this.routes.login_path + '?authsuccess=false');
 				}
@@ -122,13 +132,13 @@ class UsermanagementRouter {
 
 	usermanagementRouter() {
 		this.router.get(this.routes.users_active_path, (req, res, next) => {
-			usermanagement.getActiveUsersCb((err, result) => {
+			this.usermanagement.getActiveUsersCb((err, result) => {
 				err ? next(err) : res.status(200).json({ success: true, result });
 			});
 		});
 
 		this.router.get(this.routes.users_username_path, (req, res, next) => {
-			usermanagement.getUserCb(req.params.username, (err, result) => {
+			this.usermanagement.getUserCb(req.params.username, (err, result) => {
 				err ? next(err) : res.status(200).json({ success: true, result });
 			});
 		});

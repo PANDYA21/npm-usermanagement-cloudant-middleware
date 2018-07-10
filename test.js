@@ -1,5 +1,6 @@
 process.env.VCAP_SERVICES = JSON.stringify({
 	cloudantNoSQLDB: [{
+		name: 'myCloduant',
 		credentials: require('./cloudant_creds')
 	}]
 });
@@ -24,7 +25,8 @@ app.use(bodyParser.urlencoded({
 let usermanagementRouter = new UsermanagementRouter({
 	parentRouter: app,
 	cookieMaxAge: 2 * 1000 * 3600,
-	base_path: '/'
+	base_path: '/',
+	vcap_name: 'myCloduant'
 });
 
 /*
