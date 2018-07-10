@@ -11,7 +11,7 @@ This repository serves as a middleware for basic usermanagement routing and auth
 ## Usage
 Install module:
 ```bash
-npm install git+https://github.com/RAW21/npm-usermanagement-cloudant-middleware.git --save
+npm install git+https://github.com/PANDYA21/npm-usermanagement-cloudant-middleware.git --save
 ```
 
 Require and use in your code:
@@ -30,7 +30,8 @@ let usermanagementRouter = new UsermanagementRouter({
   // See Options in README.md for more details
   parentRouter: app, // provide parent custom routes through root router app if any.
   cookieMaxAge: 1 * 1000 * 3600, // authorization cookie expiration age in ms, default 1 hour.
-  index: '/' // path to index.html or root page after successful auth
+  index: '/', // path to index.html or root page after successful auth
+  vcap_name: 'myCloduant' // VCAP_SERVICES instance name
 });
 
 /* Order is important! */
@@ -69,7 +70,8 @@ new UsermanagementRouter({
   users_username_path: '/users/user/:username',
   cookieMaxAge: 1000 * 36000, //1 hour
   index: this.base_path,
-  sharedSecret: 'koelnerDom' 
+  sharedSecret: 'koelnerDom',
+  vcap_name: 'myCloduant'
 })
 ```
 
@@ -111,3 +113,6 @@ Maximum age for authorization cookie. Default is 1 hour.
 
 ### sharedSecret
 Shared secret string, required to create a new user, as the `createuser_path` and `createuser_page` do not use authentication. To make completely open user registrations, the `sharedSecret` can be set to empty string.
+
+### vcap_name
+VCAP_SERVICES instance name of the cloudant that is bound to the runtime, in order to point this module to the specific cloudant instance. Required only for cf based cloudant instances and runtimes.
