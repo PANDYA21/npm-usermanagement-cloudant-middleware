@@ -26,6 +26,7 @@ class UsermanagementRouter {
 		this.sharedSecret = arguments[0].sharedSecret || 'koelnerDom';
 		this.pathsWithoutAuth = arguments[0].pathsWithoutAuth; // should be an array of strings, requires parentRouter.
 		this.router = express.Router();
+		this.checkIfBrowserRequest();
 		this.cookieParser();
 		this.loginRouter();
 		this.logoutRouter();
@@ -53,6 +54,13 @@ class UsermanagementRouter {
 
 		}
 		return parsed_creds;
+	}
+
+	checkIfBrowserRequest() {
+		this.router.use((req, res, next) => {
+  		req.isBrowserRequest = req.headers['user-agent'].indexOf('Mozilla') !== -1 || req.headers['user-agent'].indexOf('Chrome') !== -1;
+  		next();
+		});
 	}
 
 	cookieParser() {
