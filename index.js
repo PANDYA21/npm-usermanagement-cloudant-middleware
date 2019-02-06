@@ -110,6 +110,9 @@ class UsermanagementRouter {
 					maxAge: cookieMaxAge,
 					path: '/'
 				});
+				if (!req.isBrowserRequest) {
+					return res.status(200).json({ success: true, Cookie: res.cookies.authorization });
+				}
 				res.status(200).redirect(this.index);
 			});
 		});
@@ -119,10 +122,16 @@ class UsermanagementRouter {
 		this.router.use(this.routes.base_path, (req, res, next) => {
 			let parsed_creds = this.parseCreds(req);
 			if (typeof parsed_creds === 'undefined') {
+				if (!req.isBrowserRequest) {
+					return res.status(401).json({ success: false, message: 'Authentication failed.' });
+				}
 				return res.status(401).redirect(this.routes.login_path + '?authsuccess=false');
 			}
 			this.usermanagement.authenticateUserCb(parsed_creds.username, parsed_creds.password, (err, result) => {
 				if (err) {
+					if (!req.isBrowserRequest) {
+						return res.status(401).json({ success: false, message: 'Authentication failed.' });
+					}
 					return res.status(401).redirect(this.routes.login_path + '?authsuccess=false');
 				}
 				next();
