@@ -119,7 +119,7 @@ class UsermanagementRouter {
 					path: '/'
 				});
 				if (!req.isBrowserRequest) {
-					return res.status(200).json({ success: true, Cookie: res.cookies.authorization });
+					return res.status(200).json({ success: true, Cookie: res.getHeaders()['set-cookie'] });
 				}
 				res.status(200).redirect(this.index);
 			});
