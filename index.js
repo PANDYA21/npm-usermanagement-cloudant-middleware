@@ -61,6 +61,7 @@ class UsermanagementRouter {
   		req.isBrowserRequest = req.headers['user-agent'].indexOf('Mozilla') !== -1 || 
   			req.headers['user-agent'].indexOf('Chrome') !== -1 ||
   			req.query.requestApiResources == 'false' ||
+  			req.body.requestApiResources == 'false' ||
   			!req.body.requestApiResources;
   		next();
 		});
