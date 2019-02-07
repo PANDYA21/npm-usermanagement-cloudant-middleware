@@ -58,7 +58,10 @@ class UsermanagementRouter {
 
 	checkIfBrowserRequest() {
 		this.router.use((req, res, next) => {
-  		req.isBrowserRequest = req.headers['user-agent'].indexOf('Mozilla') !== -1 || req.headers['user-agent'].indexOf('Chrome') !== -1;
+  		req.isBrowserRequest = req.headers['user-agent'].indexOf('Mozilla') !== -1 || 
+  			req.headers['user-agent'].indexOf('Chrome') !== -1 ||
+  			req.query.requestApiResources == 'false' ||
+  			!req.body.requestApiResources;
   		next();
 		});
 	}
@@ -109,6 +112,9 @@ class UsermanagementRouter {
 		this.router.post(this.routes.authenticate_path, (req, res, next) => {
 			this.usermanagement.authenticateUserCb(req.body.username, Buffer.from(req.body.password, 'base64').toString(), (err, result) => {
 				if (err) {
+					if (!req.isBrowserRequest) {
+						return res.status(401).json({ success: false, message: 'Authentication failed.' });
+					}
 					return res.status(401).redirect(this.routes.login_path + '?authsuccess=false');
 				}
 				res.cookie('authorization', JSON.stringify({
