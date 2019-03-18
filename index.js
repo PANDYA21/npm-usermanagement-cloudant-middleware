@@ -26,6 +26,7 @@ class UsermanagementRouter {
     this.sharedSecret = arguments[0].sharedSecret || 'koelnerDom';
     this.pathsWithoutAuth = arguments[0].pathsWithoutAuth; // should be an array of strings, requires parentRouter.
     this.router = express.Router();
+    this.servePublic();
     this.checkIfBrowserRequest();
     this.cookieParser();
     this.loginRouter();
@@ -43,6 +44,10 @@ class UsermanagementRouter {
     this.usermanagement.syncRootUserCb((err, result) => {
       err ? console.error('root user could not be synced to the service: ', this.vcap_name, 'errorMsg: ', err.message) : console.info('Root user synced to service: ', this.vcap_name);
     });
+  }
+
+  servePublic() {
+    this.router.use('/', express.static('public'));
   }
 
   parseCreds(req) {
