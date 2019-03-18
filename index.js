@@ -47,7 +47,7 @@ class UsermanagementRouter {
   }
 
   servePublic() {
-    this.router.use('/', express.static('public'));
+    this.router.use('/', express.static('public_login'));
   }
 
   parseCreds(req) {
